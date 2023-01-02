@@ -3,6 +3,7 @@ import { atom, selector, useRecoilValue, useSetRecoilState } from 'recoil';
 const devState = atom({
   key: 'devState',
   default: 'dev',
+  dangerouslyAllowMutability: true,
 });
 
 const helloDev = selector({
