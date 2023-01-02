@@ -1,24 +1,23 @@
-import React from 'react';
-import { atom, useRecoilState } from 'recoil';
+import { atom, selector, useRecoilValue } from 'recoil';
 
 const devState = atom({
   key: 'devState',
-  default: '',
+  default: 'dev',
+});
+
+const helloDev = selector({
+  key: 'courseState',
+  get: ({ get }) => {
+    const text = get(devState);
+
+    return `Hello ${text}`;
+  },
 });
 
 const App = () => {
-  const [dev, setDev] = useRecoilState(devState);
+  const dev = useRecoilValue(helloDev);
 
-  const onChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setDev(event.target.value);
-  };
-
-  return (
-    <>
-      <input type="text" value={dev} onChange={onChange} />
-      <br /> {dev}
-    </>
-  );
+  return <>{dev}</>;
 };
 
 export default App;
