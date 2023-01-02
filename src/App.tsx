@@ -1,4 +1,10 @@
-import { atom, selector, useRecoilValue, useSetRecoilState } from 'recoil';
+import {
+  atom,
+  selector,
+  selectorFamily,
+  useRecoilValue,
+  useSetRecoilState,
+} from 'recoil';
 
 const devState = atom({
   key: 'devState',
@@ -19,13 +25,34 @@ const helloDev = selector({
   },
 });
 
+const helloDevFamily = selectorFamily({
+  key: 'courseFamilyState',
+  get:
+    (str: string) =>
+    ({ get }) => {
+      const text = get(devState);
+
+      return `Hello ${text} ${str}`;
+    },
+
+  set:
+    (str: string) =>
+    ({ set }, newDev) => {
+      set(devState, `${newDev} ${str}`);
+    },
+});
+
 const App = () => {
   const dev = useRecoilValue(helloDev);
   const setNewDev = useSetRecoilState(helloDev);
+  const NewDevFamily = useRecoilValue(helloDevFamily('tooo1'));
 
   return (
     <>
       {dev}
+      <br />
+      {NewDevFamily}
+      <br />
       <button onClick={() => setNewDev('newDev')}>selector set</button>
     </>
   );
